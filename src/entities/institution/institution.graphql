@@ -1,0 +1,14 @@
+type Institution {
+  id: Int!
+  name: String
+  description: String
+  grants: [Applicant]
+}
+
+type Query {
+  institution(id: Int!): Institution
+}
+
+type Query {
+  getAllInstitutions: [Institution]
+}

@@ -1,0 +1,31 @@
+type ApplicantGrantFeedback {
+  id: Int!
+  grant: Grant
+  applicant: Applicant
+  positive: Boolean
+  feedback: String
+  createdAt: String
+  updatedAt: String
+}
+
+type Query {
+  applicantGrantFeedback(id: Int!): ApplicantGrantFeedback
+}
+
+type Query {
+  getAllApplicantGrantFeedbacks(applicantId: Int!, page: Int!, limit: Int!, positive: Boolean): ApplicantGrantFeedbackList
+}
+
+type ApplicantGrantFeedbackList {
+  items: [ApplicantGrantFeedback!]!
+  total: Int!
+}
+
+type Mutation {
+  addFeedback(
+    grantId: Int!
+    applicantId: Int!
+    positive: Boolean!
+    feedback: String
+  ): ApplicantGrantFeedback
+}

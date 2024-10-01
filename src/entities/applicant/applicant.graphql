@@ -1,0 +1,9 @@
+type Applicant {
+  id: Int!
+  name: String
+  grants: [Grant]
+}
+
+type Query {
+  applicant(id: Int!): Applicant
+}

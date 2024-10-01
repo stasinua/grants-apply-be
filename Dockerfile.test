@@ -1,0 +1,22 @@
+FROM node:lts as builder
+
+# Create app directory
+WORKDIR /usr/src/app
+
+# Install app dependencies
+COPY package.json yarn.lock ./
+
+RUN yarn install --frozen-lockfile
+
+COPY . .
+COPY .env .env
+
+RUN yarn build
+
+# Install app dependencies
+COPY package.json yarn.lock ./
+
+ENV POSTGRES_HOST host.docker.internal
+
+# Run tests
+RUN yarn test && yarn test:e2e

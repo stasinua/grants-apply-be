@@ -1,0 +1,31 @@
+type Grant {
+  id: Int!
+  name: String
+  applicants: [Applicant]
+  institution: Institution
+  description: String
+  grantAmount: Int
+  startingAt: String
+  deadlineAt: String
+  location: String
+  fundingAreas: [String]
+  createdAt: String
+  updatedAt: String
+}
+
+type Query {
+  grant(id: Int!): Grant
+}
+
+type Query {
+  getAllGrants(page: Int!, limit: Int!, applicantId: Int): GrantList
+}
+
+type GrantList {
+  items: [Grant!]!
+  total: Int!
+}
+
+type Mutation {
+  addApplicant(applicantId: Int!): Grant
+}

@@ -1,0 +1,38 @@
+version: '3.7'
+
+services:
+  postgres:
+    image: postgres:14-alpine # Replace with the image name from your Dockerfile
+    build: ./scripts/import_db_data
+    volumes:
+      - ./scripts/import_db_data/import_data.sql:/docker-entrypoint-initdb.d/import_data.sql
+    ports:
+      - '${POSTGRES_PORT}:${POSTGRES_PORT}'
+    env_file:
+      - './.env'
+    environment:
+      - POSTGRES_DB=${POSTGRES_DATABASE}
+    healthcheck:
+      test: ["CMD", "${POSTGRES_PASSWORD}", "psql", "-h", "localhost", "-U", "postgres", "-c", "SELECT 1;"]
+      interval: 5s
+      timeout: 10s
+      retries: 3
+  test:
+    depends_on:
+      - postgres
+    build:
+      context: .
+      dockerfile: Dockerfile.test
+    environment:
+      - POSTGRES_HOST=host.docker.internal
+  nestjs-app:
+    depends_on:
+      - postgres
+    build: .
+    ports:
+      - '${PORT}:${PORT}'
+    env_file:
+      - './.env'
+    environment:
+      - POSTGRES_HOST=host.docker.internal
+  

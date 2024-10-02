@@ -46,8 +46,21 @@ POSTGRES_DATABASE_TEST="grants-apply-test"
 PORT="4002"
 ```
 
-## Deployment/containerization
+## Deployment/containerization (Whole app)
 
 ```bash
 docker-compose up --build
 ```
+
+## Deployment/containerization (Test + Postgres)
+
+```bash
+yarn container:test
+```
+
+## Deployment/containerization (Nestjs + Postgres)
+
+```bash
+yarn container:app
+```
+

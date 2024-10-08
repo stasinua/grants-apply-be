@@ -18,9 +18,12 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "container:postgres": "docker-compose up postgres --build",
-    "container:app": "docker-compose up nestjs-app --build",
-    "container:test": "docker-compose up test --build"
+    "container:postgres": "docker compose up postgres --build",
+    "container:app": "docker compose up nestjs-app --build",
+    "container:test": "docker compose up test --build",
+    "container:postgres:composev1": "docker-compose up postgres --build",
+    "container:app:composev1": "docker-compose up nestjs-app --build",
+    "container:test:composev1": "docker-compose up test --build"
   },
   "dependencies": {
     "@apollo/server": "^4.11.0",

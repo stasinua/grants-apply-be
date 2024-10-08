@@ -24,10 +24,16 @@ POSTGRES_DATABASE_TEST="grants-apply-test"
 PORT="4002"
 ```
 
-## Running containerized PostgreSQL db
+## Running containerized PostgreSQL db [Docker Compose V2(Latest)]
 
 ```bash
 $ yarn container:postgres
+```
+
+## Running containerized PostgreSQL db [Docker Compose V1]
+
+```bash
+$ yarn container:postgres:composev1
 ```
 
 ## Running the app [local/container PostgreSQL db should be running]
@@ -42,17 +48,28 @@ $ yarn start:dev
 # production mode
 $ yarn start:prod
 ```
-
-## Deployment/containerization (Nestjs + Postgres)
+## Deployment/containerization (Nestjs + Postgres) [Docker Compose V2(Latest)]
 
 ```bash
 yarn container:app
 ```
 
-## Test [containerized]
+## Deployment/containerization (Nestjs + Postgres) [Docker Compose V1]
+
+```bash
+yarn container:app:composev1
+```
+
+## Test [containerized] [Docker Compose V2(Latest)]
 
 ```bash
 yarn container:test
+```
+
+## Test [containerized] [Docker Compose V1]
+
+```bash
+yarn container:test:composev1
 ```
 
 ## Test [local]

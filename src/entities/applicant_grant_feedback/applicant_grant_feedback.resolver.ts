@@ -1,11 +1,4 @@
-import {
-  Args,
-  Mutation,
-  Parent,
-  Query,
-  ResolveField,
-  Resolver,
-} from '@nestjs/graphql';
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { ApplicantGrantFeedbackService } from './db/applicant_grant_feedback.service';
 // import { GrantService } from '../grant/db/grant.service';
 
@@ -49,5 +42,15 @@ export class ApplicantGrantFeedbackResolver {
       feedback,
       positive,
     });
+  }
+
+  @Mutation()
+  async deleteAllFeedbacksForApplicant(
+    @Args('applicantId') applicantId: number,
+  ) {
+    await this.applicantGrantFeedbackResolverService.deleteAllForApplicant(
+      applicantId,
+    );
+    return [];
   }
 }

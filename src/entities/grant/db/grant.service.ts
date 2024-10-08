@@ -39,7 +39,6 @@ export class GrantService {
             .select('DISTINCT "grantId"')
             .from(ApplicantGrantFeedback, 'grantFeedback')
             .where({ applicant: { id: applicantId } })
-            .where({ positive: false })
             .getQuery();
 
           // console.log('subQueryFeedback ->>>', subQueryFeedback);
@@ -60,7 +59,7 @@ export class GrantService {
 
   async findAllApplicantGrants(applicantId: number): Promise<Grant[]> {
     return this.grantRepository.find({
-      where: { grantApplications: { applicant: { id: applicantId } } },
+      where: { grantFeedbacks: { applicant: { id: applicantId } } },
     });
   }
 

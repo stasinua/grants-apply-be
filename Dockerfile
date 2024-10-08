@@ -13,9 +13,6 @@ COPY .env .env
 
 RUN yarn build
 
-# # Run tests
-# RUN yarn test && yarn test:e2e
-
 FROM node:lts-slim
 
 ENV NODE_ENV production

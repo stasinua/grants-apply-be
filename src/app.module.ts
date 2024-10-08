@@ -11,9 +11,7 @@ import { ApplicantGrantFeedback } from './entities/applicant_grant_feedback/db/a
 import { GrantGraphqlModule } from './entities/grant/grant_graphql.module';
 import { ApplicantGraphqlModule } from './entities/applicant/applicant_graphql.module';
 import { ApplicantGrantFeedbackGraphqlModule } from './entities/applicant_grant_feedback/applicant_grant_feedback_graphql.module';
-import { ApplicantGrantApplication } from './entities/applicant_grant_application/db/applicant_grant_application.entity';
 import { InstitutionGraphqlModule } from './entities/institution/institution_graphql_module';
-import { ApplicantGrantApplicationGraphqlModule } from './entities/applicant_grant_application/applicant_grant_application.module';
 
 @Module({
   imports: [
@@ -49,13 +47,7 @@ import { ApplicantGrantApplicationGraphqlModule } from './entities/applicant_gra
             configService.get('NODE_ENV') === 'test'
               ? configService.get('POSTGRES_DATABASE_TEST')
               : configService.get('POSTGRES_DATABASE'),
-          entities: [
-            Applicant,
-            Grant,
-            Institution,
-            ApplicantGrantFeedback,
-            ApplicantGrantApplication,
-          ],
+          entities: [Applicant, Grant, Institution, ApplicantGrantFeedback],
           // synchronize: configService.get('NODE_ENV') === 'test' ? true : false, // Be cautious about using synchronize in production
           schemaSync: {
             synchronize: true,
@@ -71,7 +63,6 @@ import { ApplicantGrantApplicationGraphqlModule } from './entities/applicant_gra
     ApplicantGraphqlModule,
     ApplicantGrantFeedbackGraphqlModule,
     InstitutionGraphqlModule,
-    ApplicantGrantApplicationGraphqlModule,
   ],
 })
 export class AppModule {}

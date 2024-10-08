@@ -99,4 +99,10 @@ export class ApplicantGrantFeedbackService {
       newApplicantGrantFeedback,
     );
   }
+
+  async deleteAllForApplicant(applicantId: number) {
+    return await this.applicantGrantFeedbackRepository.delete({
+      applicant: { id: applicantId },
+    });
+  }
 }

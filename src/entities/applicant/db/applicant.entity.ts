@@ -1,4 +1,3 @@
-import { ApplicantGrantApplication } from '../../applicant_grant_application/db/applicant_grant_application.entity';
 import { ApplicantGrantFeedback } from '../../applicant_grant_feedback/db/applicant_grant_feedback.entity';
 // import { Grant } from 'src/entities/grant/db/grant.entity';
 import {
@@ -21,14 +20,8 @@ export class Applicant {
   description: string;
 
   @OneToMany(
-    () => ApplicantGrantApplication,
-    (grantApplication) => grantApplication.applicant,
-  )
-  grantApplications: ApplicantGrantApplication;
-
-  @OneToMany(
     () => ApplicantGrantFeedback,
     (grantFeedback) => grantFeedback.applicant,
   )
-  grantFeedbacks: ApplicantGrantApplication;
+  grantFeedbacks: ApplicantGrantFeedback;
 }

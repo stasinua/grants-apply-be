@@ -1,12 +1,9 @@
-import { ApplicantGrantApplication } from '../../applicant_grant_application/db/applicant_grant_application.entity';
 import { ApplicantGrantFeedback } from '../../applicant_grant_feedback/db/applicant_grant_feedback.entity';
 import { Institution } from '../../institution/db/institution.entity';
 import {
   Entity,
   Column,
   PrimaryGeneratedColumn,
-  ManyToMany,
-  JoinTable,
   ManyToOne,
   OneToMany,
 } from 'typeorm';
@@ -44,16 +41,10 @@ export class Grant {
   updatedAt: Date;
 
   @OneToMany(
-    () => ApplicantGrantApplication,
-    (grantApplication) => grantApplication.grant,
-  )
-  grantApplications: ApplicantGrantApplication;
-
-  @OneToMany(
     () => ApplicantGrantFeedback,
     (grantFeedback) => grantFeedback.grant,
   )
-  grantFeedbacks: ApplicantGrantApplication;
+  grantFeedbacks: ApplicantGrantFeedback;
 
   @ManyToOne(() => Institution, (institution) => institution.grants)
   institution: Institution;

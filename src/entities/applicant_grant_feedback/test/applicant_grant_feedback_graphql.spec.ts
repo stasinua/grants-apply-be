@@ -40,6 +40,7 @@ describe('ApplicantGrantFeedback', () => {
             findAll: jest.fn(),
             findBy: jest.fn(),
             findOneBy: jest.fn(),
+            delete: jest.fn(),
             findAndCount: jest
               .fn()
               .mockResolvedValue([
@@ -171,5 +172,12 @@ describe('ApplicantGrantFeedback', () => {
     });
 
     expect(applicantGrantFeedbackRepository.save).toHaveBeenCalled();
+  });
+
+  it('should call "delete" when creating feedback', async () => {
+    const applicantId = 1;
+    await applicantGrantFeedbackService.deleteAllForApplicant(applicantId);
+
+    expect(applicantGrantFeedbackRepository.delete).toHaveBeenCalled();
   });
 });

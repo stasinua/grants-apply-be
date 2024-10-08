@@ -13,10 +13,29 @@ COPY .env .env
 
 RUN yarn build
 
+FROM node:lts-slim
+
+WORKDIR /usr/src/app
+
 # Install app dependencies
+
 COPY package.json yarn.lock ./
 
+RUN yarn install
+
+# Prepare data for test run
+COPY .env .env
+
+COPY tsconfig.build.json tsconfig.build.json
+COPY tsconfig.json tsconfig.json
+
+COPY --from=builder /usr/src/app/dist ./dist
+COPY src/ ./src
+COPY scripts/ ./scripts
+COPY test/ ./test
+
 ENV POSTGRES_HOST host.docker.internal
+ENV NODE_ENV test
 
 # Run tests
-RUN yarn test && yarn test:e2e
+CMD ["sh", "-c", "yarn test && yarn test:e2e"] 

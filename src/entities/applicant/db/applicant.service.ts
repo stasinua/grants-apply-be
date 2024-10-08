@@ -16,7 +16,7 @@ export class ApplicantService {
 
   async findAllGrantApplicants(grantId: number): Promise<Applicant[]> {
     return this.applicantRepository.find({
-      where: { grantApplications: { grant: { id: grantId } } },
+      where: { grantFeedbacks: { grant: { id: grantId } } },
     });
   }
 

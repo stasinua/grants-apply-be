@@ -4,6 +4,7 @@ type ApplicantGrantFeedback {
   applicant: Applicant
   positive: Boolean
   feedback: String
+  appliedAt: String
   createdAt: String
   updatedAt: String
 }
@@ -28,4 +29,10 @@ type Mutation {
     positive: Boolean!
     feedback: String
   ): ApplicantGrantFeedback
+}
+
+type Mutation {
+  deleteAllFeedbacksForApplicant(
+    applicantId: Int!
+  ): [ApplicantGrantFeedback]
 }

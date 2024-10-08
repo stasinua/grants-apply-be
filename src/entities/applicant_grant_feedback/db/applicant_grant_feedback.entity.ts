@@ -19,6 +19,9 @@ export class ApplicantGrantFeedback {
   @Column('text')
   feedback: string;
 
+  @Column({ type: 'timestamp with time zone', nullable: true })
+  appliedAt: Date;
+
   @Column('timestamp with time zone')
   createdAt: Date;
 

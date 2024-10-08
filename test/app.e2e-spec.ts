@@ -7,8 +7,8 @@ import { Grant } from '../src/entities/grant/db/grant.entity';
 import { Server } from 'http';
 import { DataSource } from 'typeorm';
 import { ApplicantGrantFeedback } from '../src/entities/applicant_grant_feedback/db/applicant_grant_feedback.entity';
-import { ApplicantGrantApplication } from 'src/entities/applicant_grant_application/db/applicant_grant_application.entity';
 import { readFileSync } from 'fs';
+import * as path from 'path';
 
 describe('AppController (e2e)', () => {
   let app: INestApplication;
@@ -16,6 +16,10 @@ describe('AppController (e2e)', () => {
   let dataSource: DataSource;
 
   beforeAll(async () => {
+    console.log(
+      'ACCESSING DIR ->>>',
+      path.join(process.cwd(), 'scripts/import_db_data/import_data.sql'),
+    );
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
     }).compile();
@@ -28,11 +32,17 @@ describe('AppController (e2e)', () => {
 
     // Pre-populate db with data
     const queryRunnerTestDb = dataSource.createQueryRunner();
+    console.log(
+      'ACCESSING DIR ->>>',
+      path.join(process.cwd(), 'scripts/import_db_data/import_data.sql'),
+    );
 
     const sql = await readFileSync(
-      process.cwd() + '/scripts/import_db_data/import_data.sql',
+      path.join(process.cwd(), 'scripts/import_db_data/import_data.sql'),
       'utf-8',
     );
+
+    console.log('SQL FILE ->>>', sql.length);
 
     const dbLog = await queryRunnerTestDb.query(sql);
 
@@ -120,58 +130,6 @@ describe('AppController (e2e)', () => {
 
     expect(response.data.getAllApplicantGrantFeedbacks).toMatchObject({
       total: 0,
-    });
-  });
-
-  it('Grant Applications "find all" request works', async () => {
-    const response = await request<{
-      getAllApplicantGrantApplications: {
-        items: ApplicantGrantApplication[];
-        total: number;
-      };
-    }>(httpServer)
-      .query(gql`
-        query getAllApplicantGrantApplications(
-          $page: Int!
-          $limit: Int!
-          $applicantId: Int!
-        ) {
-          getAllApplicantGrantApplications(
-            page: $page
-            limit: $limit
-            applicantId: $applicantId
-          ) {
-            items {
-              id
-              grant {
-                name
-                institution {
-                  name
-                }
-                description
-                grantAmount
-                location
-                startingAt
-                deadlineAt
-                fundingAreas
-                createdAt
-              }
-              positive
-              createdAt
-            }
-            total
-          }
-        }
-      `)
-      .variables({
-        applicantId: 1,
-        page: 1,
-        limit: 10,
-      })
-      .expectNoErrors();
-
-    expect(response.data.getAllApplicantGrantApplications).toMatchObject({
-      total: 4,
     });
   });
 
@@ -313,6 +271,82 @@ describe('AppController (e2e)', () => {
 
     expect(response.data.getAllApplicantGrantFeedbacks).toMatchObject({
       total: 1,
+    });
+  });
+
+  it('Grant Feedbacks "delete all" request works', async () => {
+    const response = await request<{
+      deleteAllFeedbacksForApplicant: [ApplicantGrantFeedback];
+    }>(httpServer)
+      .query(gql`
+        mutation deleteAllFeedbacksForApplicant($applicantId: Int!) {
+          deleteAllFeedbacksForApplicant(applicantId: $applicantId) {
+            id
+          }
+        }
+      `)
+      .variables({
+        applicantId: 1,
+      })
+      .expectNoErrors();
+
+    expect(response.data.deleteAllFeedbacksForApplicant).toHaveLength(0);
+  });
+
+  it('Grant Feedbacks "find all" request response with 0 docs after "delete all" operation', async () => {
+    const response = await request<{
+      getAllApplicantGrantFeedbacks: {
+        items: ApplicantGrantFeedback[];
+        total: number;
+      };
+    }>(httpServer)
+      .query(gql`
+        query getAllApplicantGrantFeedbacks(
+          $applicantId: Int!
+          $page: Int!
+          $limit: Int!
+          $positive: Boolean
+        ) {
+          getAllApplicantGrantFeedbacks(
+            applicantId: $applicantId
+            page: $page
+            limit: $limit
+            positive: $positive
+          ) {
+            items {
+              id
+              grant {
+                name
+                institution {
+                  name
+                }
+                description
+                grantAmount
+                location
+                startingAt
+                deadlineAt
+                fundingAreas
+              }
+              applicant {
+                name
+              }
+              positive
+              feedback
+              createdAt
+            }
+            total
+          }
+        }
+      `)
+      .variables({
+        applicantId: 1,
+        page: 1,
+        limit: 10,
+      })
+      .expectNoErrors();
+
+    expect(response.data.getAllApplicantGrantFeedbacks).toMatchObject({
+      total: 0,
     });
   });
 

@@ -27,28 +27,13 @@ CREATE TABLE IF NOT EXISTS "grant" (
 ALTER TABLE "grant" ADD CONSTRAINT FK_grant_institution FOREIGN KEY ("institutionId") REFERENCES institution(id);
 
 -- APPLICANT GRANT FEEDBACK
-CREATE TABLE IF NOT EXISTS applicant_grant_application (
-    id SERIAL PRIMARY KEY,
-    "grantId" INTEGER,
-    "applicantId" INTEGER,
-    positive BOOLEAN,
-    reason TEXT,
-    "createdAt" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP
-
-);
-
-ALTER TABLE applicant_grant_application ADD CONSTRAINT FK_applicant_grant_application_grant FOREIGN KEY ("grantId") REFERENCES "grant"(id);
-
-ALTER TABLE applicant_grant_application ADD CONSTRAINT FK_applicant_grant_application_applicant FOREIGN KEY ("applicantId") REFERENCES applicant(id);
-
--- APPLICANT GRANT FEEDBACK
 CREATE TABLE IF NOT EXISTS applicant_grant_feedback (
     id SERIAL PRIMARY KEY,
     "grantId" INTEGER,
     "applicantId" INTEGER,
     positive BOOLEAN NOT NULL,
     feedback TEXT NOT NULL,
+    "appliedAt" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     "createdAt" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
@@ -65,18 +50,8 @@ TRUNCATE TABLE institution RESTART IDENTITY CASCADE;
 
 TRUNCATE TABLE "grant" RESTART IDENTITY CASCADE;
 
-TRUNCATE TABLE applicant_grant_application RESTART IDENTITY CASCADE;
-
 TRUNCATE TABLE applicant_grant_feedback RESTART IDENTITY CASCADE;
 
--- COPY applicant (id,name,description) FROM 'applicants.csv' 
--- WITH (FORMAT CSV, DELIMITER ',', HEADER);
--- COPY institution (id,name,description) FROM 'institutions.csv' 
--- WITH (FORMAT CSV, DELIMITER ',', HEADER);
--- COPY "grant" (id,"institutionId",name,description,"grantAmount",""startingAt"",""deadlineAt"",location, ""fundingAreas"", ""createdAt"", ""updatedAt"") FROM 'grants.csv' 
--- WITH (FORMAT CSV, DELIMITER ',', HEADER);
--- COPY applicant_grant_application (id,""grantId"",""applicantId"",positive,reason,""createdAt"",""updatedAt"") FROM 'applicant_grant_applications.csv' 
--- WITH (FORMAT CSV, DELIMITER ',', HEADER);
 -- INSTITUTIONS
 INSERT INTO
   institution (id, name, description)
@@ -239,7 +214,7 @@ VALUES
   (
     5,
     3,
-    '[Past] Looking Out',
+    '[New] Looking Out',
     '',
     100000,
     '2024-09-29 19:10:25+01',
@@ -268,7 +243,7 @@ VALUES
   (
     6,
     2,
-    '[Past] Robinson Foundation Grant',
+    '[New] Robinson Foundation Grant',
     '',
     25000,
     '2024-09-29 19:10:25+01',
@@ -297,7 +272,7 @@ VALUES
   (
     7,
     1,
-    '[Past] Dribble Foundation Grant',
+    '[New] Dribble Foundation Grant',
     '',
     75000,
     '2024-09-29 19:10:25+01',
@@ -326,98 +301,13 @@ VALUES
   (
     8,
     4,
-    '[Past] Walki wako Foundation Grant',
+    '[New] Walki wako Foundation Grant',
     '',
     130000,
     '2024-09-29 19:10:25+01',
     '2024-10-20 09:10:25+01',
     'Wilmingtone, Delaware',
     '{"Public Health Women","Culture food","Medical Assistance","Environment Art"}',
-    '2024-09-29 19:10:25+01',
-    '2024-09-29 19:10:25+01'
-  );
-
--- APPLICANT GRANT APPLICATION
-INSERT INTO
-  applicant_grant_application (
-    id,
-    "grantId",
-    "applicantId",
-    positive,
-    reason,
-    "createdAt",
-    "updatedAt"
-  )
-VALUES
-  (
-    1,
-    5,
-    1,
-    null,
-    '',
-    '2024-09-29 19:10:25+01',
-    '2024-09-29 19:10:25+01'
-  );
-
-INSERT INTO
-  applicant_grant_application (
-    id,
-    "grantId",
-    "applicantId",
-    positive,
-    reason,
-    "createdAt",
-    "updatedAt"
-  )
-VALUES
-  (
-    2,
-    6,
-    1,
-    false,
-    'Idea is not detailed',
-    '2024-09-29 19:10:25+01',
-    '2024-09-29 19:10:25+01'
-  );
-
-INSERT INTO
-  applicant_grant_application (
-    id,
-    "grantId",
-    "applicantId",
-    positive,
-    reason,
-    "createdAt",
-    "updatedAt"
-  )
-VALUES
-  (
-    3,
-    7,
-    1,
-    true,
-    '',
-    '2024-09-29 19:10:25+01',
-    '2024-09-29 19:10:25+01'
-  );
-
-INSERT INTO
-  applicant_grant_application (
-    id,
-    "grantId",
-    "applicantId",
-    positive,
-    reason,
-    "createdAt",
-    "updatedAt"
-  )
-VALUES
-  (
-    4,
-    8,
-    1,
-    true,
-    '',
     '2024-09-29 19:10:25+01',
     '2024-09-29 19:10:25+01'
   );

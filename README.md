@@ -59,12 +59,12 @@ yarn container:test
 
 ```bash
 # unit tests
-$ yarn run test
+$ yarn test
 ```
 
 NOTE: [local/container PostgreSQL db should be running]
 
 ```bash
 # e2e tests
-$ yarn run test:e2e
+$ yarn test:e2e
 ```
